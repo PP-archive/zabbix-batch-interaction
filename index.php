@@ -23,14 +23,13 @@ $f3->route('GET /', function($f3) use ($config) {
 //        $zabbixClient->getApplicationsByHostId([10207]);
     //$f3->set('var', $zabbixClient->hello());
 
-    if (is_file('.config')) {
-        $_config = json_decode(file_get_contents('.config'), true);
-    }
-
-    $f3->set('api_url', isset($_config['api_url']) ? $_config['api_url'] : null);
-    $f3->set('user', isset($_config['user']) ? $_config['user'] : null);
-    $f3->set('password', isset($_config['password']) ? $_config['password'] : null);
-
+    $f3->set('api_url', isset($config['apiUrl']) ? $config['apiUrl'] : null);
+    $f3->set('user', isset($config['user']) ? $config['user'] : null);
+    $f3->set('password', isset($config['password']) ? $config['password'] : null);
+    $f3->set('host_ids', isset($config['hostIds']) ? trim(implode(',', $config['hostIds'])) : null);
+    
+    $f3->set('hosts', isset($config['hosts']) ? $config['hosts'] : null);
+    
     $template = new Template();
     echo $template->render('templates/index.htm');
 }
@@ -66,12 +65,24 @@ $f3->route('POST /remove', function($f3) {
 );
 
 $f3->route('POST /config', function($f3) use ($config) {
-    $_config = ['api_url' => $f3->get('POST.api_url'),
+    $_config = ['apiUrl' => $f3->get('POST.api_url'),
         'user' => $f3->get('POST.user'),
-        'password' => $f3->get('POST.password')];
+        'password' => $f3->get('POST.password'),
+        'hostIds' => explode(',', $f3->get('POST.host_ids'))];
 
     file_put_contents("./.config", json_encode($_config));
+    
+    $_config = json_decode(file_get_contents('.config'), true);
 
+    $config = array_merge($config, $_config);
+
+    $zabbixClient = new Zabbix\Client($config['apiUrl'], $config['user'], $config['password']);
+    
+    $zabbixClient->auth();
+    $hosts = $zabbixClient->getHosts($config['hostIds']);
+    
+    Config::set('hosts', $hosts);
+    
     Header("Location: " . $config['home']);
 }
 );

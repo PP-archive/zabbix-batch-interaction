@@ -25,8 +25,8 @@
                 <div class="tab-pane active" id="config">
                     <form role="form" action="config" method="POST">
                         <div class="form-group">
-                            <label for="api-url">api URL</label>
-                            <input type="text" class="form-control" id="api-url" name="api_url" placeholder="api URL" value="{{ @api_url }}">
+                            <label for="api_url">api URL</label>
+                            <input type="text" class="form-control" id="api_url" name="api_url" placeholder="api URL" value="{{ @api_url }}">
                         </div>
                         <div class="form-group">
                             <label for="user">user</label>
@@ -34,18 +34,28 @@
                         </div>
                         <div class="form-group">
                             <label for="password">password</label>
-                            <input type="text" class="form-control" id="password" name="password" placeholder="user" value="{{ @password }}">
+                            <input type="text" class="form-control" id="password" name="password" placeholder="password" value="{{ @password }}">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="host_ids">host ids</label>
+                            <input type="text" class="form-control" id="host_ids" name="host_ids" placeholder="host ids" value="{{ @host_ids }}">
                         </div>
                         
                         <input type="hidden" name="action" value="config" />
-                        <button type="submit" class="btn btn-success">Submit</button>
+                        <button type="submit" class="btn btn-success">Configure</button>
                     </form>
                 </div>
                 <div class="tab-pane" id="create">
                     <form role="form" action="create" method="POST">
                         <div class="form-group">
                             <label for="name-template">Host</label>
-                            <input type="text" class="form-control" id="host" name="host" placeholder="Host">
+                            
+                            <select class="form-control" name="host" id="host">
+                                <repeat group="{{ @hosts }}" value="{{ @host }}">
+                                    <option value="{{ @host['hostid'] }}">{{ @host['name'] }}</option>
+                                </repeat>
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="nameTemplate">Name template</label>

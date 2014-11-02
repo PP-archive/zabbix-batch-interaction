@@ -60,15 +60,19 @@ class Client {
             'method' => 'host.get',
             'params' => [
                 'output' => 'extend',
-                'hostids' => $hostIds // extend if necessary
+
             ],
             'auth' => $this->_auth,
             'id' => 0
         ];
         
+        if(is_array($hostIds) && !empty($hostIds)) {
+            $request['params']['hostids'] = $hostIds;
+        }
+        
         $result = $this->_request($request);
         
-        return $result;
+        return $result['result'];
     }
     
     public function getApplicationsByHostId($hostIds) {

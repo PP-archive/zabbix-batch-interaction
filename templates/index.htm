@@ -15,13 +15,33 @@
             </div>
 
             <ul class="nav nav-tabs" role="tablist">
-                <li class="active"><a href="#create" role="tab" data-toggle="tab">Create</a></li>
+                <li class="active"><a href="#config" role="tab" data-toggle="tab">Configuration</a></li>
+                <li><a href="#create" role="tab" data-toggle="tab">Create</a></li>
                 <li><a href="#remove" role="tab" data-toggle="tab">Remove</a></li>
             </ul>
 
             <!-- Tab panes -->
             <div class="tab-content" style="padding:10px;">
-                <div class="tab-pane active" id="create">
+                <div class="tab-pane active" id="config">
+                    <form role="form" action="config" method="POST">
+                        <div class="form-group">
+                            <label for="api-url">api URL</label>
+                            <input type="text" class="form-control" id="api-url" name="api_url" placeholder="api URL" value="{{ @api_url }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="user">user</label>
+                            <input type="text" class="form-control" id="user" name="user" placeholder="user" value="{{ @user }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">password</label>
+                            <input type="text" class="form-control" id="password" name="password" placeholder="user" value="{{ @password }}">
+                        </div>
+                        
+                        <input type="hidden" name="action" value="config" />
+                        <button type="submit" class="btn btn-success">Submit</button>
+                    </form>
+                </div>
+                <div class="tab-pane" id="create">
                     <form role="form" action="create" method="POST">
                         <div class="form-group">
                             <label for="name-template">Host</label>

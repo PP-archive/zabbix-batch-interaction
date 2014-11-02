@@ -1,0 +1,10 @@
+{
+    "require": {
+        "bcosca/fatfree": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "": "src/"
+        }
+    }
+}

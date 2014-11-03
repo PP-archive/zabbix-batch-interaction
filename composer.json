@@ -1,6 +1,6 @@
 {
     "require": {
-        "bcosca/fatfree": "dev-master"
+        "bcosca/fatfree": "3.3.0"
     },
     "autoload": {
         "psr-4": {

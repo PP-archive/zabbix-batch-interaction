@@ -2,3 +2,4 @@ nbproject
 tmp
 application.cfg
 .config
+vendor/.git

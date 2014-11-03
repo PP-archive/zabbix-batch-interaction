@@ -5,7 +5,11 @@ class Config {
     const CONFIG_BASENAME = '.config';
     
     public static function set($key, $value) {
-        $config = json_decode(file_get_contents(self::CONFIG_BASENAME), true);
+        if(file_exists(self::CONFIG_BASENAME)) {
+            $config = json_decode(file_get_contents(self::CONFIG_BASENAME), true);
+        } else {
+            $config = [];
+        }
         
         $config[$key] = $value;
         

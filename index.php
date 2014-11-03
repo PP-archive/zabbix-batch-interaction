@@ -8,11 +8,10 @@ $f3->config('application.cfg');
 $config = $f3->get('config');
 
 // trying to read the .config file
-if (file_exists('.config')) {
-    $_config = json_decode(file_get_contents('.config'), true);
+$_config = Config::getAll();
 
-    $config = array_merge($config, $_config);
-}
+
+$config = array_merge($config, $_config);
 
 
 $f3->route('GET /', function($f3) use ($config) {
@@ -27,9 +26,9 @@ $f3->route('GET /', function($f3) use ($config) {
     $f3->set('user', isset($config['user']) ? $config['user'] : null);
     $f3->set('password', isset($config['password']) ? $config['password'] : null);
     $f3->set('host_ids', isset($config['hostIds']) ? trim(implode(',', $config['hostIds'])) : null);
-    
+
     $f3->set('hosts', isset($config['hosts']) ? $config['hosts'] : null);
-    
+
     $template = new Template();
     echo $template->render('templates/index.htm');
 }
@@ -65,24 +64,35 @@ $f3->route('POST /remove', function($f3) {
 );
 
 $f3->route('POST /config', function($f3) use ($config) {
+    $hostIds = $f3->get('POST.host_ids');
+
+    if ($hostIds === "") {
+        $hostIds = [];
+    } else {
+        $hostIds = explode(',', $f3->get('POST.host_ids'));
+
+        foreach ($hostIds as &$value) {
+            $value = trim($value);
+        }
+    }
+
     $_config = ['apiUrl' => $f3->get('POST.api_url'),
         'user' => $f3->get('POST.user'),
         'password' => $f3->get('POST.password'),
-        'hostIds' => explode(',', $f3->get('POST.host_ids'))];
+        'hostIds' => $hostIds];
 
-    file_put_contents("./.config", json_encode($_config));
-    
-    $_config = json_decode(file_get_contents('.config'), true);
+    Config::setMap($_config);
+    $_config = Config::getAll();
 
     $config = array_merge($config, $_config);
 
     $zabbixClient = new Zabbix\Client($config['apiUrl'], $config['user'], $config['password']);
-    
+
     $zabbixClient->auth();
     $hosts = $zabbixClient->getHosts($config['hostIds']);
-    
+
     Config::set('hosts', $hosts);
-    
+
     Header("Location: " . $config['home']);
 }
 );

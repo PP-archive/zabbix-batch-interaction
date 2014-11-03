@@ -23,5 +23,23 @@ class Config {
             return null;
         }
     }
+    
+    public static function getAll() {
+        if(is_file(self::CONFIG_BASENAME)) {
+            $config = json_decode(file_get_contents(self::CONFIG_BASENAME), true);
+            
+            return $config;
+        } else {
+            return [];
+        }
+    }
+    
+    public static function setMap($map) {
+        foreach($map as $key => $value) {
+            self::set($key, $value);
+        }
+        
+        return true;
+    }
 
 }

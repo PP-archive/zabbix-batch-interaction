@@ -1,0 +1,24 @@
+<div class="tab-pane <check if="{{ @activeTab == 'config' }}">active</check>" id="config">
+    <form role="form" action="config" method="POST">
+        <div class="form-group">
+            <label for="api_url">api URL</label>
+            <input type="text" class="form-control" id="api_url" name="api_url" placeholder="api URL" value="{{ @api_url }}">
+        </div>
+        <div class="form-group">
+            <label for="user">user</label>
+            <input type="text" class="form-control" id="user" name="user" placeholder="user" value="{{ @user }}">
+        </div>
+        <div class="form-group">
+            <label for="password">password</label>
+            <input type="text" class="form-control" id="password" name="password" placeholder="password" value="{{ @password }}">
+        </div>
+
+        <div class="form-group">
+            <label for="host_ids">host ids</label>
+            <input type="text" class="form-control" id="host_ids" name="host_ids" placeholder="host ids" value="{{ @host_ids }}">
+        </div>
+
+        <input type="hidden" name="action" value="config" />
+        <button type="submit" class="btn btn-success">Configure</button>
+    </form>
+</div>

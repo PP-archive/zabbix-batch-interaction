@@ -1,0 +1,46 @@
+<div class="tab-pane <check if="{{ @activeTab == 'create' }}">active</check>" id="create">
+    <form role="form" action="create" id="createForm" method="POST">
+        <div class="form-group">
+            <label for="name-template">Host</label>
+
+            <select class="form-control" name="host" id="host">
+                <option value="">Select host</option>
+                <repeat group="{{ @hosts }}" value="{{ @host }}">
+                    <option value="{{ @host['hostid'] }}">{{ @host['name'] }}</option>
+                </repeat>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="name-template">Application</label>
+
+            <select class="form-control" name="application" id="application" disabled="true">
+                    <option value="">Select application</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="nameTemplate">Name template</label>
+            <input type="text" class="form-control" id="nameTemplate" name="name_template" placeholder="Name template">
+        </div>
+        <div class="form-group">
+            <label for="keyTemplate">Key template</label>
+            <input type="text" class="form-control" id="keyTemplate" name="key_template" placeholder="Key template">
+        </div>
+        <div class="form-group">
+            <label for="values">Values</label>
+            <textarea id="values" name="values" class="form-control" rows="5"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="type">Type</label>
+            <select class="form-control" name="type" id="type">
+                <option value="zabbix-trapper">Zabbix trapper</option>
+                <option value="calculated">Calculated</option>
+            </select>
+        </div>
+        <div class="form-group hidden" id="formulaTemplateFormGroup">
+            <label for="formulaTemplate">Formula</label>
+            <textarea id="formulaTemplate" name="formula_template" class="form-control" rows="5"></textarea>
+        </div>
+        <input type="hidden" name="action" value="create" />
+        <button type="submit" class="btn btn-success">Submit</button>
+    </form>
+</div>

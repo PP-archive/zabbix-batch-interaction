@@ -1,0 +1,36 @@
+<div class="tab-pane <check if="{{ @activeTab == 'remove' }}">active</check>" id="remove">
+    <form role="form" action="remove" id="removeForm" method="POST">
+        <div class="form-group" id="hostFormGroup">
+            <label for="name-template">Host</label>
+
+            <select class="form-control" name="host" id="host">
+                <option value="">Select host</option>
+                <repeat group="{{ @hosts }}" value="{{ @host }}">
+                    <option value="{{ @host['hostid'] }}">{{ @host['name'] }}</option>
+                </repeat>
+            </select>
+        </div>
+        <div class="form-group" id="keyTemplateFormGroup">
+            <label for="keyTemplate">Name template</label>
+            <input type="text" class="form-control" id="keyTemplate" name="key_template" placeholder="Key template">
+        </div>
+        
+        <div class="form-group hidden" id="itemsToRemoveFormGroup">
+             <h3>Do you really want to remove these items?</h3>
+             <a href="{{ @config[home] }}">&larr; back</a>
+             <div id="itemsToRemoveContainer" class="well" style="margin-bottom: 2px;"></div>
+             <a href="{{ @config[home] }}">&larr; back</a>
+        </div> 
+        
+        <div class="form-group hidden" id="noResults">
+             <div class="alert alert-danger alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    No results
+             </div>
+        </div> 
+
+        <input type="hidden" name="action" value="remove" />
+        <button type="button" class="btn btn-info" id="search">Search</button>
+        <button type="submit" class="btn btn-danger hidden" id="submit">Submit</button>
+    </form>
+</div>

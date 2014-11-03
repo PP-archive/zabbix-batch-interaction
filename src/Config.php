@@ -9,7 +9,7 @@ class Config {
         
         $config[$key] = $value;
         
-        file_put_contents('.config', json_encode($config));
+        file_put_contents('.config', json_encode($config, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
         
         return true;
     }

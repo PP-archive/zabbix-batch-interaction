@@ -14,96 +14,38 @@
                 <h1>Zabbix batch interaction</h1>
             </div>
 
+            <check if="{{ @successMessage !== null }}">
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    {{ @successMessage }}
+                </div>
+            </check>
+            
+            <check if="{{ @errorMessage !== null }}">
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    {{ @errorMessage }}
+                </div>
+            </check>
+
             <ul class="nav nav-tabs" role="tablist">
-                <li class="active"><a href="#config" role="tab" data-toggle="tab">Configuration</a></li>
-                <li><a href="#create" role="tab" data-toggle="tab">Create</a></li>
-                <li><a href="#remove" role="tab" data-toggle="tab">Remove</a></li>
+                <li <check if="{{ @activeTab == 'config' }}">class="active"</check>><a href="#config" role="tab" data-toggle="tab">Configuration</a></li>
+                <li <check if="{{ @activeTab == 'create' }}">class="active"</check>><a href="#create" role="tab" data-toggle="tab">Create</a></li>
+                <li <check if="{{ @activeTab == 'remove' }}">class="active"</check>><a href="#remove" role="tab" data-toggle="tab">Remove</a></li>
             </ul>
 
             <!-- Tab panes -->
             <div class="tab-content" style="padding:10px;">
-                <div class="tab-pane active" id="config">
-                    <form role="form" action="config" method="POST">
-                        <div class="form-group">
-                            <label for="api_url">api URL</label>
-                            <input type="text" class="form-control" id="api_url" name="api_url" placeholder="api URL" value="{{ @api_url }}">
-                        </div>
-                        <div class="form-group">
-                            <label for="user">user</label>
-                            <input type="text" class="form-control" id="user" name="user" placeholder="user" value="{{ @user }}">
-                        </div>
-                        <div class="form-group">
-                            <label for="password">password</label>
-                            <input type="text" class="form-control" id="password" name="password" placeholder="password" value="{{ @password }}">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="host_ids">host ids</label>
-                            <input type="text" class="form-control" id="host_ids" name="host_ids" placeholder="host ids" value="{{ @host_ids }}">
-                        </div>
-                        
-                        <input type="hidden" name="action" value="config" />
-                        <button type="submit" class="btn btn-success">Configure</button>
-                    </form>
-                </div>
-                <div class="tab-pane" id="create">
-                    <form role="form" action="create" method="POST">
-                        <div class="form-group">
-                            <label for="name-template">Host</label>
-                            
-                            <select class="form-control" name="host" id="host">
-                                <repeat group="{{ @hosts }}" value="{{ @host }}">
-                                    <option value="{{ @host['hostid'] }}">{{ @host['name'] }}</option>
-                                </repeat>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="nameTemplate">Name template</label>
-                            <input type="text" class="form-control" id="nameTemplate" name="name_template" placeholder="Name template">
-                        </div>
-                        <div class="form-group">
-                            <label for="keyTemplate">Key template</label>
-                            <input type="text" class="form-control" id="keyTemplate" name="key_template" placeholder="Key template">
-                        </div>
-                        <div class="form-group">
-                            <label for="values">Values</label>
-                            <textarea id="values" name="values" class="form-control" rows="5"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="type">Type</label>
-                            <select class="form-control" name="type" id="type">
-                                <option value="zabbix-trapper">Zabbix trapper</option>
-                                <option value="calculated">Calculated</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="formulaTemplate">Formula</label>
-                            <textarea id="formulaTemplate" name="formula_template" class="form-control" rows="5"></textarea>
-                        </div>
-                        <input type="hidden" name="action" value="create" />
-                        <button type="submit" class="btn btn-success">Submit</button>
-                    </form>
-                </div>
-                <div class="tab-pane" id="remove">
-                    <form role="form" action="create" method="POST">
-                        <div class="form-group">
-                            <label for="name-template">Host</label>
-                            <input type="text" class="form-control" id="host" name="host" placeholder="Host">
-                        </div>
-                        <div class="form-group">
-                            <label for="nameTemplate">Name template</label>
-                            <input type="text" class="form-control" id="nameTemplate" name="name_template" placeholder="Name template">
-                        </div>
-                        
-                        <input type="hidden" name="action" value="remove" />
-                        <button type="submit" class="btn btn-danger">Submit</button>
-                    </form>
-                </div>
+                <include href="templates/_config.htm" />
+                <include href="templates/_create.htm" />
+                <include href="templates/_remove.htm" />
             </div>
         </div> <!-- /container -->
         <!-- jQuery -->
         <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+        <script src="assets/js/app.js"></script>
     </body>
 </html>

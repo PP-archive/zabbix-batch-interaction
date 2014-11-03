@@ -33,7 +33,7 @@ class Client {
             return json_decode($result, true);
         }
         else {
-            throw new Exception(curl_error($ch));
+            throw new \Exception(curl_error($ch));
         }
     }
     
@@ -88,17 +88,65 @@ class Client {
         ];
         
         $result = $this->_request($request);
-        var_dump($result); exit;
         
-        return $result;
+        return $result['result'];
     }
     
-    public function getItemsByHost() {
+    public function getItemsByHost($hostids) {
+        $request = [
+            'jsonrpc' => '2.0',
+            'method' => 'item.get',
+            'params' => [
+                'hostids' => $hostids,
+                'output' => 'extend'
+            ],
+            'auth' => $this->_auth,
+            'id' => 0
+        ];
         
+        $result = $this->_request($request);
+        
+        return $result['result'];
     }
     
-    public function createItems() {
+    public function createItem($item) {
+        $request = [
+            'jsonrpc' => '2.0',
+            'method' => 'item.create',
+            'params' => [
+                'name' => $item['name'],
+                'key_' => $item['key'],
+                'hostid' => $item['hostid'],
+                'type' => $item['type'],
+                'value_type' => 0,
+                'applications' => $item['applications'],
+                'delay' => 30,
+            ],
+            'auth' => $this->_auth,
+            'id' => 0
+        ];
         
+        if(isset($item['formula'])) {
+            $request['params']['params'] = $item['formula'];
+        }
+        
+        $result = $this->_request($request);
+        
+        return true;
     }
+    
+    public function removeItems($itemIds) {
+        $request = [
+            'jsonrpc' => '2.0',
+            'method' => 'item.delete',
+            'params' => $itemIds,
+            'auth' => $this->_auth,
+            'id' => 0
+        ];
+        
+        $result = $this->_request($request);
+        
+        return count($itemIds);
+    }    
 
 }
